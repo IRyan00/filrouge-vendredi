@@ -23,7 +23,14 @@ app.use(express.urlencoded({ extended: true }))
 
 // ─── Route de test ────────────────────────────────────────────────────────────
 app.get('/api/health', (req, res) => {
-  res.json({ status: 'ok', timestamp: new Date().toISOString() })
+  res.json({ status: 'ok tout va bien', timestamp: new Date().toISOString() })
+})
+
+//
+app.get('/', (req, res) => {
+  res.send(`
+    <h1>LA SYNTAXE C'EST IPMROTNAT</h1>
+    `)
 })
 
 // ─── 404 ──────────────────────────────────────────────────────────────────────
