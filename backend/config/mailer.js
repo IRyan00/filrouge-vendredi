@@ -1,20 +1,25 @@
-import nodemailer from 'nodemailer'
+import * as Brevo from '@getbrevo/brevo'
 import dotenv from 'dotenv'
 
 dotenv.config()
 
-const transporter = nodemailer.createTransport({
-  host: process.env.MAIL_HOST,
-  port: Number(process.env.MAIL_PORT),
-  secure: true, // false pour port 587 (TLS), true pour 465 (SSL)
-  auth: {
-    user: process.env.MAIL_USER,
-    pass: process.env.MAIL_PASS,
-  },
-})
+const apiInstance = new Brevo.TransactionalEmailsApi()
+apiInstance.authentications['apiKey'].apiKey = process.env.MAIL_PASS
 
-transporter.verify()
-  .then(() => console.log('SMTP connecté'))
-  .catch(err => console.warn('SMTP erreur de connexion:', err.message))
+export const sendVerificationEmail = async (to, verify_token) => {
+  const email = new Brevo.SendSmtpEmail()
 
-export default transporter
+  email.subject = 'Vérifie ton compte CyberMapp'
+  email.to = [{ email: to }]
+  email.sender = { email: process.env.MAIL_USER, name: 'CyberMapp' }
+  email.htmlContent = `
+    <h2>Bienvenue sur CyberMapp !</h2>
+    <p>Clique sur le lien ci-dessous pour vérifier ton email :</p>
+    <a href="${process.env.CLIENT_URL}/verify/${verify_token}">
+      Vérifier mon email
+    </a>
+  `
+
+  await apiInstance.sendTransacEmail(email)
+  console.log('✅ Email envoyé à', to)
+}
