@@ -4,11 +4,6 @@ import helmet from "helmet";
 import rateLimit from "express-rate-limit";
 import dotenv from "dotenv";
 import authRoutes from "./routes/authRoutes.js";
-import express from "express";
-import cors from "cors";
-import helmet from "helmet";
-import rateLimit from "express-rate-limit";
-import dotenv from "dotenv";
 import locationRoutes from "./routes/locationRoutes.js";
 
 dotenv.config();
@@ -35,18 +30,13 @@ app.get("/api/health", (req, res) => {
   res.json({ status: "ok tout va bien", timestamp: new Date().toISOString() });
 });
 
-app.use("/api/auth", authRoutes);
-
-app.get("/api/health", (req, res) => {
-  res.json({ status: "ok tout va bien", timestamp: new Date().toISOString() });
-});
-
 app.get("/", (req, res) => {
   res.send(`
     <h1>LA SYNTAXE C'EST IPMROTANT</h1>
     `);
 });
 
+app.use("/api/auth", authRoutes);
 app.use("/api/location", locationRoutes);
 
 // ─── 404 ──────────────────────────────────────────────────────────────────────
