@@ -21,7 +21,7 @@ export const register = async (req, res) => {
         await createUser({ username, email, password: hashedPassword, verify_token })
 
         await transporter.sendMail({
-            from: `"CyberMapp" <${process.env.MAIL_USER}`,
+            from: `"CyberMapp" <${process.env.MAIL_USER}>`,
             to: email,
             subject: 'Verification du compte CyberMapp',
             html: `
