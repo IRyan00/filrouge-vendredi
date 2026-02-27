@@ -1,13 +1,12 @@
-import Brevo from '@getbrevo/brevo'
+import * as brevo from '@getbrevo/brevo'
 import dotenv from 'dotenv'
 
 dotenv.config()
 
 export const sendVerificationEmail = async (to, verify_token) => {
-  const client = Brevo.ApiClient.instance
-  client.authentications['api-key'].apiKey = process.env.MAIL_PASS
-
-  const apiInstance = new Brevo.TransactionalEmailsApi()
+  const apiInstance = new brevo.TransactionalEmailsApi()
+  
+  apiInstance.authentications['api-key'].apiKey = process.env.MAIL_PASS
 
   await apiInstance.sendTransacEmail({
     subject: 'Vérifie ton compte CyberMapp',
