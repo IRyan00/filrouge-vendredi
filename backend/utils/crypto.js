@@ -1,12 +1,12 @@
-import CryptoJS from 'crypto-js'
-import dotenv from 'dotenv'
+import CryptoJS from "crypto-js";
+import dotenv from "dotenv";
 
-dotenv.config()
+dotenv.config();
 
-const SECRET = process.env.CRYPTO_SECRET
+const SECRET = process.env.CRYPTO_SECRET;
 
 if (!SECRET) {
-  console.warn('⚠️  CRYPTO_SECRET manquant dans .env')
+  console.warn("⚠️  CRYPTO_SECRET manquant dans .env");
 }
 
 /**
@@ -15,9 +15,9 @@ if (!SECRET) {
  * @returns {string} valeur chiffrée
  */
 export const encrypt = (value) => {
-  if (!value) return value
-  return CryptoJS.AES.encrypt(String(value), SECRET).toString()
-}
+  if (!value) return value;
+  return CryptoJS.AES.encrypt(String(value), SECRET).toString();
+};
 
 /**
  * Déchiffre une valeur AES
@@ -25,12 +25,12 @@ export const encrypt = (value) => {
  * @returns {string} valeur déchiffrée
  */
 export const decrypt = (value) => {
-  if (!value) return value
+  if (!value) return value;
   try {
-    const bytes = CryptoJS.AES.decrypt(value, SECRET)
-    return bytes.toString(CryptoJS.enc.Utf8)
+    const bytes = CryptoJS.AES.decrypt(value, SECRET);
+    return bytes.toString(CryptoJS.enc.Utf8);
   } catch {
     // Valeur non chiffrée (migration) → retournée telle quelle
-    return value
+    return value;
   }
-}
+};
