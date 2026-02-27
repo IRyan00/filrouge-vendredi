@@ -1,8 +1,8 @@
 import argon2 from 'argon2'
 import jwt from 'jsonwebtoken'
 import { randomUUID } from 'crypto'
-import { createUser, findUserByEmail, verifyUserToken } from '../models/userModel.js'
-import transporter from '../config/mailer.js'
+import { createUser, findUserByEmail, verifyUserToken } from '../model/userModel.js'
+// import transporter from '../config/mailer.js'
 
 // Register
 export const register = async (req, res) => {
