@@ -2,7 +2,7 @@ import argon2 from 'argon2'
 import jwt from 'jsonwebtoken'
 import { randomUUID } from 'crypto'
 import { createUser, findUserByEmail, verifyUserToken } from '../model/userModel.js'
-import { sendVerificationEmail } from '../config/mailer.js'
+import transporter from '../config/mailer.js'
 
 // Register
 export const register = async (req, res) => {
@@ -18,7 +18,19 @@ export const register = async (req, res) => {
         const verify_token = randomUUID()
 
         await createUser({ username, email, password: hashedPassword, verify_token })
-        await sendVerificationEmail(email, verify_token)
+        
+        await transporter.sendMail({
+            from: `"CyberMapp" <${process.env.MAIL_USER}>`,
+            to: email,
+            subject: 'Vérifie ton compte CyberMapp',
+            html: `
+                <h2>Bienvenue sur CyberMapp !</h2>
+                <p>Clique sur le lien ci-dessous pour vérifier ton email :</p>
+                <a href="${process.env.CLIENT_URL}/verify/${verify_token}">
+                    Vérifier mon email
+                </a>
+            `,
+        })
 
         res.status(201).json({ message: 'Compte créé, vérifie ton email' })
         
